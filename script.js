@@ -1,21 +1,27 @@
-fetch('https://jsonplaceholder.typicode.com/todos')
-  .then(function (response) {
-    return response.json()
-  })
-  .then(function (apiJsonData) {
-    console.log(apiJsonData)
-    renderDataInTheTable(apiJsonData)
-  })
+const columnDefs = [
+  { field: 'userId' },
+  { field: 'id' },
+  { field: 'title' },
+  { field: 'completed' }
+]
 
-function renderDataInTheTable(todos) {
-  const myTable = document.getElementById('html-data-table')
-  todos.forEach((todo) => {
-    let newRow = document.createElement('tr')
-    Object.values(todo).forEach((value) => {
-      let cell = document.createElement('td')
-      cell.innerText = value
-      newRow.appendChild(cell)
+const gridOptions = {
+  columnDefs: columnDefs,
+  onGridReady: (event) => {
+    renderDataInTheTable(event.api)
+  }
+}
+
+const eGridDiv = document.getElementById('data-table')
+new agGrid.Grid(eGridDiv, gridOptions)
+
+function renderDataInTheTable(api) {
+  fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(function (response) {
+      return response.json()
     })
-    myTable.appendChild(newRow)
-  })
+    .then(function (data) {
+      api.setRowData(data)
+      api.sizeColumnsToFit()
+    })
 }
