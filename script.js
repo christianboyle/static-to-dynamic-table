@@ -1,11 +1,19 @@
 const columnDefs = [
-  { field: 'userId' },
-  { field: 'id' },
+  { field: 'userId', filter: 'agNumberColumnFilter' },
+  { field: 'id', filter: 'agNumberColumnFilter' },
   { field: 'title' },
   { field: 'completed' }
 ]
 
 const gridOptions = {
+  defaultColDef: {
+    sortable: true,
+    filter: 'agTextColumnFilter',
+    resizable: true
+  },
+
+  pagination: true,
+
   columnDefs: columnDefs,
   onGridReady: (event) => {
     renderDataInTheTable(event.api)
@@ -13,6 +21,7 @@ const gridOptions = {
 }
 
 const eGridDiv = document.getElementById('data-table')
+
 new agGrid.Grid(eGridDiv, gridOptions)
 
 function renderDataInTheTable(api) {
